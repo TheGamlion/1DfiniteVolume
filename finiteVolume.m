@@ -22,7 +22,7 @@ t = 0;
 %update u:
 while t<t_end
     %stepsize needs to be eval. every step to meet cfl condition
-    der_max = max_der(flux_function,u_prev,N);
+    der_max = max_der(flux_function,u_prev,N,delta_x);
     %disp(der_max)
     delta_t = delta_x/abs(der_max);
     for x=1:N
@@ -70,13 +70,13 @@ end
 
 end
 
-function [der_max] =max_der(flux_function,u_prev,N)
+function [der_max] =max_der(flux_function,u_prev,N,delta_x)
 
-der_max = abs(flux_function(u_prev(1)) -flux_function(u_prev(end)));
+der_max = abs(flux_function(u_prev(1)) -flux_function(u_prev(end)))/delta_x;
 
 for i=2:N
-    if(der_max < flux_function(u_prev(i)) -flux_function(u_prev(i-1)))
-        der_max = abs(flux_function(u_prev(i)) -flux_function(u_prev(i-1)));
+    if(der_max < (flux_function(u_prev(i)) -flux_function(u_prev(i-1)))/delta_x)
+        der_max = abs(flux_function(u_prev(i)) -flux_function(u_prev(i-1)))/delta_x;
     end
 end
 end

@@ -11,7 +11,7 @@ u0_sin= @(u) sin((pi)*u);
 method = 'Lax_Friedrichs';
 boundry = u0;
 N =60;
-t_end =1;
+t_end =0.5;
 
 burgers_eq = @(u) 1/2.*u.^2;
 
@@ -39,7 +39,7 @@ uEx =@(x,t) fminbnd(@(u) (u - boundry(x-u*t)).^2,u0min,u0max);
 
 
 time = linspace(0,t_end,100);
-axis = linspace(-1,1,2*N);
+axis = linspace(-1,1,4*N);
 
 for i=1:size(axis,2)
     for j=1:size(time,2)
@@ -69,46 +69,8 @@ colorbar;
 subplot(1,2,2)
 
 plot2 = pcolor(axis,time,tmp');
+%plot2.FaceColor = 'interp';
 title('exact solution');
 set(plot2, 'EdgeColor', 'none');
 title('exact solution');
 colorbar;
-
-% %% norm
-% clear all;
-% %get data for diffrent delta t
-%  
-% a = -1;
-% b = 1;
-% 
-% for i=1:4
-%     [u,all,distance_t] = finiteVolume(10^i,t_end,boundry,burgers_eq,method);
-%     
-%     x = linspace(-1,1,10^i);
-%     t = zeros(1);
-%     
-%     % creating unequal timegrid
-%     for k=2:size(distance_t,1)
-%         t(k) = t(k-1) + distance_t(k);
-%     end
-%     
-%     uEx =@(x,t) u0(x-2*t);
-%     
-%     tmp = zeros(size(x,2),size(t,2));
-%     
-%     for k=1:size(x,2)
-%         for j=1:size(t,2)
-%             tmp(k,j) = uEx(x(k),t(j));
-%         end
-%     end
-%     residum = 0;
-%     
-%     for k=1:size(all,2)
-%         residum(k) = norm(all(:,k)-tmp(:,k),1);
-%     end
-%     l1(i) = norm(residum,1);
-%     
-% end
-% figure
-% loglog([0,10,100,1000],l1);
-% title('l1 error');
